@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
   issues: write
-  projects: read
+  repository-projects: write
 
 jobs:
   sync:
