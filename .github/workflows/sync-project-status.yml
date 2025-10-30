@@ -2,35 +2,37 @@ name: Sync Project Status to Issue State
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # every 10 minutes
-  workflow_dispatch:        # run manually from Actions tab
+    - cron: "*/10 * * * *"   # every 10 minutes
+  workflow_dispatch:         # allow manual runs from Actions tab
 
 permissions:
   contents: read
   issues: write
-  repository-projects: write
+  repository-projects: write   # <-- important for Projects v2
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-    env:
-      OWNER: VardhanPokala
-      PROJECT_NUMBER: 1
-      GH_TOKEN: ${{ secrets.GH_PAT }}
     steps:
       - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq
 
       - name: Ensure GitHub CLI is available
         run: |
           if ! command -v gh >/dev/null 2>&1; then
-            echo "Installing GitHub CLI..."
             sudo apt-get update
             sudo apt-get install -y gh
           fi
           gh --version
 
       - name: Sync GitHub Project status to issue open/closed
+        env:
+          OWNER: VardhanPokala
+          PROJECT_NUMBER: "1"
+          GH_TOKEN: ${{ secrets.GH_PAT }}       # <-- use your PAT here
+        shell: bash
         run: |
           set -euo pipefail
 
@@ -38,20 +40,25 @@ jobs:
           items_json=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
 
           echo "$items_json" \
-          | jq -c '.items[] | select(.content.type=="ISSUE") | {url:.content.url, state:.content.state, status:(.fieldValues[]?.name // "To do")}' \
-          | while read -r item; do
-              issue_url=$(echo "$item" | jq -r '.url')
-              status=$(echo "$item" | jq -r '.status')
-              state=$(echo "$item" | jq -r '.state')
+          | jq -c '.items[]
+            | select(.content.type=="ISSUE")
+            | {
+                url: .content.url,
+                state: .content.state,
+                status: (.fieldValues[]?
+                         | select(.field.name=="Status")
+                         | .name // "To do")
+              }' \
+          | while read -r row; do
+              url=$(jq -r '.url' <<<"$row")
+              status=$(jq -r '.status' <<<"$row")
 
-              echo "Processing $issue_url — status: $status, state: $state"
-
-              if [[ "$status" == "Done" && "$state" == "OPEN" ]]; then
-                echo "→ Closing issue"
-                gh issue close "$issue_url" --reason "completed" || true
-              elif [[ "$status" != "Done" && "$state" == "CLOSED" ]]; then
-                echo "→ Reopening issue"
-                gh issue reopen "$issue_url" || true
+              if [[ "$status" == "Done" ]]; then
+                gh api -X PATCH "$url" -f state="closed" >/dev/null
+              else
+                gh api -X PATCH "$url" -f state="open"   >/dev/null
               fi
             done
+
+          echo "Sync complete."
 
