@@ -1,0 +1,64 @@
+name: Sync Project Status to Issue State
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # every 10 minutes
+  workflow_dispatch:          # run manually from Actions tab
+
+permissions:
+  contents: read
+  issues: write
+  projects: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Ensure GitHub CLI is available
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "Installing GitHub CLI..."
+            sudo apt-get update
+            sudo apt-get install -y gh
+          fi
+          gh --version
+
+      - name: Sync GitHub Project status to issue open/closed
+        env:
+          OWNER: VardhanPokala
+          PROJECT_NUMBER: "1"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "Fetching items from project..."
+          items_json=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
+
+          echo "$items_json" \
+          | jq -c '.items[]
+                    | select(.content.type=="ISSUE")
+                    | {
+                        url: .content.url,
+                        state: .content.state,
+                        status: (.fieldValues[]?
+                                  | select(.field.name=="Status")
+                                  | .name // "To do")
+                      }' \
+          | while read -r row; do
+              url=$(echo "$row"   | jq -r .url)
+              state=$(echo "$row" | jq -r .state)
+              status=$(echo "$row"| jq -r .status)
+
+              if [ "$status" = "Done" ] && [ "$state" = "OPEN" ]; then
+                echo "✅ Closing $url because Status=Done"
+                gh issue close "$url" --comment "Closed automatically because Project Status is **Done**."
+              elif [ "$status" != "Done" ] && [ "$state" = "CLOSED" ]; then
+                echo "🔄 Reopening $url because Status=$status"
+                gh issue reopen "$url" --comment "Reopened automatically because Project Status changed from **Done**."
+              else
+                echo "No change for $url (Status=$status, Issue=$state)"
+              fi
+            done
