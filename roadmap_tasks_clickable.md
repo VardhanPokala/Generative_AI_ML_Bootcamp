@@ -1,0 +1,60 @@
+# 🧠 Generative AI & ML Bootcamp – 56-Day Clickable Checklist
+
+- [ ] **W1D1:** Install Python, VS Code, Git; create virtual env
+- [ ] **W1D2:** Python variables, strings, input/output
+- [ ] **W1D3:** Lists, dicts, loops; list/dict comprehensions
+- [ ] **W1D4:** Functions, modules, imports
+- [ ] **W1D5:** Files, CSV/JSON; exceptions; pathlib
+- [ ] **W1D6:** Intro OOP; refactor classes; packaging
+- [ ] **W1D7:** Git workflow; README polish; demo GIF
+- [ ] **W2D1:** NumPy arrays, slicing, broadcasting
+- [ ] **W2D2:** pandas loading/cleaning; dtypes; loc/iloc
+- [ ] **W2D3:** groupby, pivots, merges
+- [ ] **W2D4:** Matplotlib/Seaborn plotting
+- [ ] **W2D5:** Datetime + text ops; feature prep
+- [ ] **W2D6:** Data storytelling; executive summary
+- [ ] **W2D7:** Polish project & README
+- [ ] **W3D1:** Linear algebra & stats for ML
+- [ ] **W3D2:** Train/test split; baseline; correlation
+- [ ] **W3D3:** Linear Regression; MAE/MSE/R²
+- [ ] **W3D4:** Regularization & cross-validation
+- [ ] **W3D5:** Learning curves; CLI inference
+- [ ] **W3D6:** Refactor repository; docs
+- [ ] **W3D7:** Week 3 review; summary write-up
+- [ ] **W4D1:** Titanic EDA; missing data & imputation
+- [ ] **W4D2:** Pipelines: ColumnTransformer + Pipeline
+- [ ] **W4D3:** Metrics: precision/recall/F1/ROC
+- [ ] **W4D4:** Trees & Random Forest; tuning
+- [ ] **W4D5:** Stratified CV; leakage checks
+- [ ] **W4D6:** End-to-end run script
+- [ ] **W4D7:** Project polish & summary
+- [ ] **W5D1:** MLP on MNIST; activations; loss
+- [ ] **W5D2:** CNN layers; pooling; padding
+- [ ] **W5D3:** Regularization, BN, LR schedules
+- [ ] **W5D4:** Data augmentation
+- [ ] **W5D5:** Saving/loading models; ONNX overview
+- [ ] **W5D6:** Streamlit/Gradio deploy
+- [ ] **W5D7:** Writeup & demo video
+- [ ] **W6D1:** Text preprocessing; stopwords; stemming
+- [ ] **W6D2:** BoW/TF-IDF + Logistic Regression
+- [ ] **W6D3:** Embeddings & attention intro
+- [ ] **W6D4:** Fine-tune DistilBERT
+- [ ] **W6D5:** Error analysis; threshold tuning
+- [ ] **W6D6:** Serve model via Streamlit/Gradio
+- [ ] **W6D7:** Docs & packaging
+- [ ] **W7D1:** LLM fundamentals; tokens; temperature
+- [ ] **W7D2:** LLM API scripts (summarize/extract)
+- [ ] **W7D3:** Embeddings & cosine similarity
+- [ ] **W7D4:** Image generation (diffusion APIs) + ethics
+- [ ] **W7D5:** RAG patterns (chunking/retrievers/rerank)
+- [ ] **W7D6:** LangChain basics; refactor pipeline
+- [ ] **W7D7:** Capstone scoping & repo scaffold
+- [ ] **W8D1:** Ingestion & chunking; PDF/TXT parse
+- [ ] **W8D2:** Build embeddings; persist FAISS
+- [ ] **W8D3:** Retrieval + optional rerank
+- [ ] **W8D4:** Generation prompts + citations
+- [ ] **W8D5:** UI with Streamlit/Gradio
+- [ ] **W8D6:** Testing, eval set, guardrails
+- [ ] **W8D7:** Deploy + README + demo video
+
+**Progress:** ![Progress](https://progress-bar.dev/0/?scale=56&title=Completed&width=300)
