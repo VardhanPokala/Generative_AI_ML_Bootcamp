@@ -1,6 +1,6 @@
 # 🧠 Generative AI & ML Bootcamp – 56-Day Clickable Checklist
 
-- [ +] **W1D1:** Install Python, VS Code, Git; create virtual env
+- [ ] **W1D1:** Install Python, VS Code, Git; create virtual env
 - [ ] **W1D2:** Python variables, strings, input/output
 - [ ] **W1D3:** Lists, dicts, loops; list/dict comprehensions
 - [ ] **W1D4:** Functions, modules, imports
